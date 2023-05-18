@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Home</title>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<!--<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>-->
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+    This content is only shown to admins.
+</div>
+<div sec:authorize="hasRole('ROLE_USER')">
+    This content is only shown to users.
+</div>
+<br/>
+<div>
+    Name: <span sec:authentication="name">NOT FOUND</span>
+    <hr>
+    Roles: <span sec:authentication="principal.authorities">NOT FOUND</span>
+
+</div>
+<br/>
+<a th:href="@{/logout}">Logout</a>
+</body>
+</html>
