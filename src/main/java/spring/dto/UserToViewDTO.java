@@ -1,8 +1,6 @@
 package spring.dto;
 
-import java.util.Set;
-
-public class UserDTO {
+public class UserToViewDTO {
     private Long id;
 
     private String username;
@@ -14,10 +12,18 @@ public class UserDTO {
     private String email;
 
     private String password;
+    private String roleUser;
+    private String roleAdmin;
 
-    private Set<String> roles;
-
-    public UserDTO() {
+    public UserToViewDTO(Long id, String username, String lastName, int age, String email, String password, String roleUser, String roleAdmin) {
+        this.id = id;
+        this.username = username;
+        this.lastName = lastName;
+        this.age = age;
+        this.email = email;
+        this.password = password;
+        this.roleUser = roleUser;
+        this.roleAdmin = roleAdmin;
     }
 
     public Long getId() {
@@ -68,11 +74,19 @@ public class UserDTO {
         this.password = password;
     }
 
-    public Set<String> getRoles() {
-        return roles;
+    public String getRoleAdmin() {
+        return roleAdmin;
     }
 
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
+    public void setRoleAdmin(String roleAdmin) {
+        this.roleAdmin = roleAdmin;
+    }
+
+    public String getRoleUser() {
+        return roleUser;
+    }
+
+    public void setRoleUser(String roleUser) {
+        this.roleUser = roleUser;
     }
 }

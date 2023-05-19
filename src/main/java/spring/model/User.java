@@ -16,53 +16,33 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    public String username;
+    public String firstName;
 
     public String lastName;
 
-
     public int age;
 
+    @Column(unique = true)
     public String email;
+
     public String password;
 
-    //    @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     protected Set<Role> roles;
 
     public User() {
     }
 
-    public User(Long id, String username, String lastName, String password, int age, String email, Set<Role> roles) {
+    public User(Long id, @NonNull String firstName, @NonNull String lastName, @NonNull String password, int age,
+                @NonNull String email, @NonNull Set<Role> roles) {
         this.id = id;
         this.lastName = lastName;
         this.age = age;
         this.email = email;
         this.roles = roles;
-        this.username = username;
+        this.firstName = firstName;
         this.password = password;
     }
-
-    public User(String username, String lastName, String password, int age, String email) {
-        this.lastName = lastName;
-        this.age = age;
-        this.email = email;
-        this.password = password;
-        this.username = username;
-
-    }
-
-    public User(Long id, String username, String lastName, String password, int age, String email) {
-        this.id = id;
-        this.lastName = lastName;
-        this.age = age;
-        this.email = email;
-        this.password = password;
-        this.username = username;
-
-    }
-
 
     public Long getId() {
         return id;
@@ -72,8 +52,8 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFirstName(String username) {
+        this.firstName = username;
     }
 
     @Override
@@ -88,7 +68,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
@@ -110,6 +90,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 
     public void setPassword(String password) {
         this.password = password;
@@ -145,5 +126,9 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getFirstName() {
+        return firstName;
     }
 }

@@ -5,5 +5,4 @@ import spring.model.Role;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
     Role getRoleByRole(String role);
-
 }

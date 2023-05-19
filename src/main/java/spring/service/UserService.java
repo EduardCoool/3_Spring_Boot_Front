@@ -1,18 +1,21 @@
 package spring.service;
 
+import spring.dto.UserDTO;
+import spring.dto.UserToViewDTO;
 import spring.model.User;
 
 import java.util.List;
 
 public interface UserService {
-    User findUserById(Long userId);
+    UserToViewDTO getUserByUsername(String username);
 
-    List<User> allUsers();
+    List<UserToViewDTO> allUsers();
 
     boolean save(User user);
 
-    boolean registrationUser(User user);
-    boolean update(User user);
+    boolean addNewUser(UserDTO userDTO);
+
+    boolean update(UserDTO user);
 
     boolean deleteUser(Long userId);
 }

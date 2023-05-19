@@ -1,11 +1,7 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
@@ -13,7 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
-    <title>Hello, world!</title>
+    <title>Hello, User!</title>
 </head>
 
 
@@ -21,11 +17,13 @@
 <header style="text-line-through-color: white">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark ">
 
-        <a class="navbar-brand" href="#"> <span sec:authentication="name">NOT FOUND</span></a>
+        <a class="navbar-brand" href="#">
+            <div type="text" id="AuthenticationUser"></div>
+        </a>
 
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" style="color: white">Logout</a>
+                <a class="nav-link" href="/logout" style="color: white">Logout</a>
             </li>
         </ul>
     </nav>
@@ -33,7 +31,6 @@
 </header>
 <div class="container-fluid">
     <div class="row">
-
         <div class="col-2" style="background-color: white">
             <br> <br><br>
             <div class="nav flex-column nav-pills" id="v-pills-tab" aria-orientation="vertical" role="tablist"
@@ -44,7 +41,6 @@
 
                 <a class="nav-link" id="userPill" data-toggle="pill" href="#user" role="tab"
                    aria-controls="user" aria-selected="false">User</a>
-
 
             </div>
         </div>
@@ -82,7 +78,6 @@
                                        aria-labelledby="user1">
                                     <thead>
                                     <tr>
-
                                         <th scope="col">ID</th>
                                         <th scope="col">First Name</th>
                                         <th scope="col">Last Name</th>
@@ -137,8 +132,8 @@
                                         <div class="form-group">
                                             <label for="formControlRole">Role</label>
                                             <select class="custom-select" multiple size="2" id="formControlRole">
-                                                <option value="ROLE_ADMIN">Admin</option>
-                                                <option value="ROLE_USER">User</option>
+                                                <option value="ADMIN">Admin</option>
+                                                <option value="USER">User</option>
                                             </select>
                                             <br><br>
                                             <a id="addUserButton" data-toggle="tab" href="#userTable"
@@ -158,13 +153,13 @@
                 </div>
 
                 <div class="tab-pane fade" id="user" role="tabpanel" aria-labelledby="userPill">
-
                     <h1>User information-page</h1>
                     <br>
                     <h3>About user</h3>
-
                     <div class="card px-3 py-4">
-                        <table class="table table-striped " style="width:97%" id="userPanel">
+
+                        <!--                        Таблица авторизованного пользователя-->
+                        <table class="table table-striped " style="width:97%" id="tableAuthenticationUser">
                             <thead>
                             <tr>
                                 <th scope="col">ID</th>
@@ -176,16 +171,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>19</td>
-                                <td>@mdo</td>
-                                <td>user</td>
-                            </tr>
                             </tbody>
-
                         </table>
                     </div>
                 </div>
@@ -253,15 +239,14 @@
                                        placeholder="12345">
                             </div>
                             <div class="form-group">
-                                <label for="formControlRole">Role</label>
+                                <label for="formControlRoleEdit">Role</label>
                                 <select class="custom-select" multiple
                                         size="2"
                                         id="formControlRoleEdit">
-                                    <option>Admin</option>
-                                    <option>User</option>
+                                    <option value="ADMIN">Admin</option>
+                                    <option value="USER">User</option>
                                 </select>
                             </div>
-
                         </form>
                     </div>
                 </div>
@@ -344,16 +329,12 @@
                                        placeholder="12345">
                             </div>
                             <div class="form-group">
-                                <label for="formControlRole">Role</label>
-                                <select class="custom-select" multiple
-                                        size="2"
-                                        disabled
-                                        id="formControlRoleDelete">
-                                    <option>Admin</option>
-                                    <option>User</option>
-                                </select>
+                                <label for="formControlRoleDelete">Role</label>
+                                <input type="text" class="form-control"
+                                       id="formControlRoleDelete"
+                                       disabled
+                                       placeholder="Admin User">
                             </div>
-
                         </form>
                     </div>
                 </div>
@@ -371,29 +352,29 @@
     </div>
 </div>
 
-
 <script>
+    let roleUserToAdmin;
     $(document).ready(function () {
-        ViewTableUsers();
+        viewTableAuthenticationUser();
+        viewTableUsers();
+        authorizationUserToRole();
 
         $("#addUserButton").click(function () {
+            $("#userTable-tab").click();
             addUser();
-
         });
+
         $("#editButton").click(function () {
             // $("#tableUsers tbody > tr").remove();
             editUser();
-
-
-
         });
+
         $("#deleteButton").click(function () {
             deleteUser();
 
         });
         $('#tableUsers').on('click', '.btn-edit', function () {
-        // $(".btn-edit").click(function () {
-
+            // $(".btn-edit").click(function () {
             const name = $(this).parent().parent().find(".userName").html();
             const lastName = $(this).parent().parent().find(".lastName").html();
             const age = $(this).parent().parent().find(".age").html();
@@ -407,12 +388,10 @@
             $("#formControlRoleEdit").val(role);
             $("#formControlIdEdit").val(id);
             $("#editModal").modal('show');
-
-
         });
 
         $('#tableUsers').on('click', '.btn-delete', function () {
-        // $(".btn-delete").click(function () {
+            // $(".btn-delete").click(function () {
             const name = $(this).parent().parent().find(".userName").html();
             const lastName = $(this).parent().parent().find(".lastName").html();
             const age = $(this).parent().parent().find(".age").html();
@@ -426,23 +405,17 @@
             $("#formControlRoleDelete").val(role);
             $("#formControlIDelete").val(id);
             $("#deleteModal").modal('show');
-
         });
-
-        // $(".edit").click(function (e) {
-        //     $editRow = $(this).closest("tr");
-        //
-        //     $("#uid").val($editRow.data('user-id'));
-        //     $("#uname").val($editRow.find(".uname").text());
-        //
-        //     $("#myModal").modal('show');
-        // });
-
-
     });
 
+    function authorizationUserToRole() {
+        if (roleUserToAdmin === "") {
+            $("#adminPill").attr("hidden", true);
+            $("#userPill").click();
+        }
+    }
 
-    function ViewTableUsers() {
+    function viewTableUsers() {
         $("#tableUsers tbody").html("");
         $.ajax({
             type: "GET",
@@ -452,12 +425,6 @@
             async: false,
             success: function (results) {
                 results.forEach(user => {
-                    var userRole
-                    if (user.roles.length > 1) {
-                        if (user.roles[1].role !== null) {
-                            userRole = "ROLE_ADMIN"
-                        }
-                    }
                     $("#tableUsers tbody").append(
                         "<tr>" +
                         "<td class='id' >" + user.id + "</td>" +
@@ -465,32 +432,48 @@
                         "<td class='lastName'>" + user.lastName + "</td>" +
                         "<td class='age'>" + user.age + "</td>" +
                         "<td class='email'>" + user.email + "</td>" +
-                        "<td class='userRole'>" + user.roles[0].role + ", " + userRole + "</td>" +
+                        "<td class='userRole'>" + user.roleUser + " " + user.roleAdmin + "</td>" +
                         "<td >" + "<button  type='submit' class='btn btn-info btn-edit'> " +
                         "Edit</button>" + "</td>" +
                         "<td >" + "<button class='btn btn-danger btn-delete'> " +
                         "Delete</button>" + "</td>" +
                         " </tr>"
                     );
-                    userRole == " ";
-
                 });
             }
         });
     }
 
 
-    function addUser() {
-        let user = {
-            id: 5,
-            username: "EDefefef",
-            lastName: "efefefeffe",
-            age: 30,
-            email: "ivanwwww@mail.ru",
-            password: "wdww"
+    function viewTableAuthenticationUser() {
+        $("#tableAuthenticationUser tbody").html("");
+        $.ajax({
+            type: "GET",
+            url: "authentication",
+            contentType: "application/json; charset=utf-8",
+            data: "",
+            async: false,
+            success: function (user) {
+                $("#tableAuthenticationUser tbody").append(
+                    "<tr>" +
+                    "<td class='id' >" + user.id + "</td>" +
+                    "<td class='userName' >" + user.username + "</td>" +
+                    "<td class='lastName'>" + user.lastName + "</td>" +
+                    "<td class='age'>" + user.age + "</td>" +
+                    "<td class='email'>" + user.email + "</td>" +
+                    "<td class='userRole'>" + user.roleUser + " " + user.roleAdmin + "</td>" +
+                    "</tr>"
+                );
+                roleUserToAdmin = user.roleAdmin;
+                $("#AuthenticationUser").html("")
+                    .append(user.email + " with roles: " + user.roleUser + " " + user.roleAdmin);
+                authorizationUserToRole();
 
-        }
-        debugger;
+            }
+        });
+    }
+
+    function addUser() {
         $.ajax({
             type: "POST",
             url: "admin/save",
@@ -504,13 +487,11 @@
                     age: $("#formControlAge").val(),
                     email: $("#formControlEmail").val(),
                     password: $("#formControlPass").val(),
-                    // roles: "efef"
+                    roles: $("#formControlRole").val(),
                 }
             ),
-            success: function () {
-            },
         });
-        ViewTableUsers();
+        viewTableUsers();
     }
 
     function editUser() {
@@ -528,13 +509,14 @@
                     age: $("#formControlAgeEdit").val(),
                     email: $("#formControlEmailEdit").val(),
                     password: $("#formControlPassEdit").val(),
-                    // roles: "efef"
+                    roles: $("#formControlRoleEdit").val(),
                 }
             ),
             success: function () {
             },
         });
-        ViewTableUsers();
+        viewTableUsers();
+        viewTableAuthenticationUser();
     }
 
     function deleteUser() {
@@ -545,21 +527,10 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             async: false,
-            data: JSON.stringify(
-                {
-                    id: $("#formControlIdEdit").val(),
-                    username: $("#formControlFirstNameEdit").val(),
-                    lastName: $("#formControlLastNameEdit").val(),
-                    age: $("#formControlAgeEdit").val(),
-                    email: $("#formControlEmailEdit").val(),
-                    password: $("#formControlPassEdit").val(),
-                    // roles: "efef"
-                }
-            ),
             success: function () {
             },
         });
-        ViewTableUsers();
+        viewTableUsers();
     }
 
 </script>
