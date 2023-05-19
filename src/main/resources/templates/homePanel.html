@@ -12,7 +12,6 @@
     <title>Hello, User!</title>
 </head>
 
-
 <body>
 <header style="text-line-through-color: white">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark ">
@@ -27,7 +26,6 @@
             </li>
         </ul>
     </nav>
-
 </header>
 <div class="container-fluid">
     <div class="row">
@@ -61,7 +59,6 @@
 
                             <a class="nav-item nav-link" id="newUser-tab" data-toggle="tab" href="#newUser"
                                role="tab" aria-controls="newUser" aria-selected="false">New User</a>
-
                         </div>
                     </nav>
 
@@ -70,10 +67,7 @@
                              role="tabpanel" aria-labelledby="userTable-tab">
                             <br>
                             <h3>All users</h3>
-
                             <div class="card px-3 py-4" style="width:97%">
-
-                                <!--                                Таблица пользователей-->
                                 <table class="table table-striped" id="tableUsers"
                                        aria-labelledby="user1">
                                     <thead>
@@ -94,11 +88,9 @@
                             </div>
                         </div>
 
-                        <!--                        Окно добавления пользователя-->
                         <div class="tab-pane fade" id="newUser" role="tabpanel" aria-labelledby="newUser-tab">
                             <br>
                             <h3>Add new user</h3>
-
                             <div class="card">
                                 <br>
                                 <div class="col-5 mx-auto text-center font-weight-bold" style="background-color: white">
@@ -142,13 +134,10 @@
                                                 Add new user
                                             </a>
                                         </div>
-
                                     </form>
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
 
@@ -157,8 +146,6 @@
                     <br>
                     <h3>About user</h3>
                     <div class="card px-3 py-4">
-
-                        <!--                        Таблица авторизованного пользователя-->
                         <table class="table table-striped " style="width:97%" id="tableAuthenticationUser">
                             <thead>
                             <tr>
@@ -180,7 +167,6 @@
     </div>
 </div>
 
-<!--     Модальное окно изменения юзера-->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
      aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -264,8 +250,6 @@
     </div>
 </div>
 
-
-<!-- Модальное окно удаления пользователя-->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
      aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -365,7 +349,6 @@
         });
 
         $("#editButton").click(function () {
-            // $("#tableUsers tbody > tr").remove();
             editUser();
         });
 
@@ -374,7 +357,6 @@
 
         });
         $('#tableUsers').on('click', '.btn-edit', function () {
-            // $(".btn-edit").click(function () {
             const name = $(this).parent().parent().find(".userName").html();
             const lastName = $(this).parent().parent().find(".lastName").html();
             const age = $(this).parent().parent().find(".age").html();
@@ -391,7 +373,6 @@
         });
 
         $('#tableUsers').on('click', '.btn-delete', function () {
-            // $(".btn-delete").click(function () {
             const name = $(this).parent().parent().find(".userName").html();
             const lastName = $(this).parent().parent().find(".lastName").html();
             const age = $(this).parent().parent().find(".age").html();
@@ -444,7 +425,6 @@
         });
     }
 
-
     function viewTableAuthenticationUser() {
         $("#tableAuthenticationUser tbody").html("");
         $.ajax({
@@ -468,7 +448,6 @@
                 $("#AuthenticationUser").html("")
                     .append(user.email + " with roles: " + user.roleUser + " " + user.roleAdmin);
                 authorizationUserToRole();
-
             }
         });
     }
