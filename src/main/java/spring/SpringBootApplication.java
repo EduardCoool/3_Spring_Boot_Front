@@ -23,7 +23,7 @@ public class SpringBootApplication {
     public CommandLineRunner demo(UserDetailsServiceImpl repository, NewsService newsService) {
         return (args) -> {
             News news = new News(1L, "Вино за 217 рублей получило золотую медаль престижного винного конкурса", "ivan", false, false);
-            News news2 = new News(2L, "Прелестный код, если бы не тупые скобочки", "ivan", false, false);
+//            News news2 = new News(2L, "Прелестный код, если бы не тупые скобочки", "ivan", false, false);
 
 
             Role roleUser = new Role(1L, "ROLE_USER");
@@ -40,7 +40,7 @@ public class SpringBootApplication {
 
 
             newsService.save(news);
-            newsService.save(news2);
+//            newsService.save(news2);
 
 
             repository.save(user);
