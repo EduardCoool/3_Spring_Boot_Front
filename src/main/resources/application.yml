@@ -17,3 +17,6 @@ spring:
     driverClassName: org.postgresql.Driver
 
 sortByValue: id
+
+URL: https://api.openai.com/v1/chat/completions
+API_KEY: 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

@@ -14,7 +14,6 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String role;
-
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<User> users;
 

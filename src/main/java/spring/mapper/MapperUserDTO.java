@@ -1,23 +1,27 @@
-package spring.dto;
+package spring.mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import spring.dao.RoleRepository;
 import spring.model.Role;
 import spring.model.User;
+import spring.model.UserDTO;
+import spring.model.UserToViewDTO;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Component
-public class MapperDTO {
+public class MapperUserDTO {
     private final String ROLE_USER = "ROLE_USER";
+
     private final String ROLE_ADMIN = "ROLE_ADMIN";
 
     private final String ROLE_USER_TO_VIEW = "USER";
 
     private final String ROLE_ADMIN_TO_VIEW = "ADMIN";
+
     @Autowired
     private RoleRepository roleRepository;
 

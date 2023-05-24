@@ -8,11 +8,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import spring.dao.RoleRepository;
 import spring.dao.UserRepository;
-import spring.dto.MapperDTO;
-import spring.dto.UserDTO;
-import spring.dto.UserToViewDTO;
+import spring.mapper.MapperUserDTO;
 import spring.model.User;
+import spring.model.UserDTO;
+import spring.model.UserToViewDTO;
 
 import java.util.List;
 
@@ -22,10 +23,13 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private MapperDTO mapperDTO;
+    private MapperUserDTO mapperUserDTO;
 
     @Value("${sortByValue}")
     private String sortByValue;
@@ -44,14 +48,18 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserToViewDTO getUserByUsername(String email) {
-        return mapperDTO.toDto(userRepository.findByEmail(email));
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return mapperUserDTO.toDto(userRepository.findByEmail(email));
     }
 
     @Override
     public List<UserToViewDTO> allUsers() {
         return userRepository.findAll(Sort.by(sortByValue))
                 .stream()
-                .map(mapperDTO::toDto)
+                .map(mapperUserDTO::toDto)
                 .toList();
     }
 
@@ -68,7 +76,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     }
 
     public boolean addNewUser(UserDTO userDto) {
-        User user = mapperDTO.toUser(userDto);
+        User user = mapperUserDTO.toUser(userDto);
         User userFromDB = userRepository.findByEmail(user.getFirstName());
         if (userFromDB != null) {
             return false;
@@ -80,18 +88,20 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public boolean update(UserDTO userDto) {
-        User user = mapperDTO.toUser(userDto);
+        User user = mapperUserDTO.toUser(userDto);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
     }
 
     @Override
     public boolean deleteUser(Long userId) {
-        if (userRepository.findById(userId).isPresent()) {
-            userRepository.deleteById(userId);
-            return true;
+        if (userRepository.findById(userId).isEmpty() |
+                roleRepository.getRoleByRole("ROLE_ADMIN").getUsers().size() < 2) {
+            return false;
         }
-        return false;
+        userRepository.deleteById(userId);
+        return true;
     }
 }
 

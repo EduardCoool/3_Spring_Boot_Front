@@ -1,4 +1,4 @@
-package spring.dto;
+package spring.model;
 
 public class UserToViewDTO {
     private Long id;
@@ -12,7 +12,9 @@ public class UserToViewDTO {
     private String email;
 
     private String password;
+
     private String roleUser;
+
     private String roleAdmin;
 
     public UserToViewDTO(Long id, String username, String lastName, int age, String email, String password, String roleUser, String roleAdmin) {

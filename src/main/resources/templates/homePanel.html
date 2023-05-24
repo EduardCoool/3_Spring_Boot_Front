@@ -22,7 +22,7 @@
 
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/logout" style="color: white">Logout</a>
+                <a class="nav-link" id="logout" href="/logout" style="color: white">Logout</a>
             </li>
         </ul>
     </nav>
@@ -59,6 +59,9 @@
 
                             <a class="nav-item nav-link" id="newUser-tab" data-toggle="tab" href="#newUser"
                                role="tab" aria-controls="newUser" aria-selected="false">New User</a>
+
+                            <a class="nav-item nav-link" id="moderNews-tab" data-toggle="tab" href="#moderNews"
+                               role="tab" aria-controls="moderNews" aria-selected="false">Moderation News</a>
                         </div>
                     </nav>
 
@@ -79,6 +82,30 @@
                                         <th scope="col">Email</th>
                                         <th scope="col">Role</th>
                                         <th scope="col">Edit</th>
+                                        <th scope="col">Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <div class="tab-pane fade" id="moderNews"
+                             role="tabpanel" aria-labelledby="moderNews-tab">
+                            <br>
+                            <h3>Suggested News</h3>
+                            <div class="card px-3 py-4" style="width:97%">
+                                <table class="table table-striped" id="tableNews"
+                                       aria-labelledby="user2">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Author</th>
+                                        <th scope="col">Aggression</th>
+                                        <th scope="col">News</th>
+                                        <th scope="col">Publish</th>
                                         <th scope="col">Delete</th>
                                     </tr>
                                     </thead>
@@ -138,28 +165,84 @@
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
 
                 <div class="tab-pane fade" id="user" role="tabpanel" aria-labelledby="userPill">
-                    <h1>User information-page</h1>
+                    <h1>User panel</h1>
                     <br>
-                    <h3>About user</h3>
-                    <div class="card px-3 py-4">
-                        <table class="table table-striped " style="width:97%" id="tableAuthenticationUser">
-                            <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">First Name</th>
-                                <th scope="col">Last Name</th>
-                                <th scope="col">Age</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Role</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab-user" role="tablist">
+
+                            <a class="nav-item nav-link active" id="aboutUser-tab" data-toggle="tab"
+                               href="#aboutUserTable"
+                               role="tab" aria-controls="aboutUserTable" aria-selected="true">Home</a>
+
+                            <a class="nav-item nav-link" id="news-tab" data-toggle="tab" href="#news"
+                               role="tab" aria-controls="news" aria-selected="false">News</a>
+                        </div>
+                    </nav>
+
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="aboutUserTable"
+                             role="tabpanel" aria-labelledby="aboutUser-tab">
+                            <!--                                      Окно авторизованного пользователя-->
+                            <h3>About user</h3>
+                            <div class="card px-3 py-4">
+                                <table class="table table-striped " style="width:97%" id="tableAuthenticationUser">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">First Name</th>
+                                        <th scope="col">Last Name</th>
+                                        <th scope="col">Age</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <div class="tab-pane fade" id="news"
+                             role="tabpanel" aria-labelledby="news-tab">
+                            <br>
+                            <form>
+                                <div class="form-group" style="width:97%">
+                                    <label for="formControlPublish" class="h4">Publish the news</label>
+                                    <textarea class="form-control " id="formControlPublish" rows="3"
+                                              placeholder="Write down what you have interesting!"></textarea>
+                                </div>
+                            </form>
+
+                            <div class="row justify-content-end" style="width:98%">
+                                <a id="addNewsButtonModal" data-toggle="tab" role="tab"
+                                   href="#addNewsButtonModal" aria-selected="true"
+                                   class="button btn btn-success"> Add news
+                                </a>
+                            </div>
+
+                            <h3>Suggested News</h3>
+                            <div class="card px-3 py-4" style="width:97%">
+                                <table class="table table-striped" id="tableUserNews"
+                                       aria-labelledby="user2">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Author</th>
+                                        <th scope="col">News</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -336,12 +419,163 @@
     </div>
 </div>
 
+<div class="modal fade" id="acceptModal" tabindex="-1" role="dialog"
+     aria-labelledby="acceptModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="acceptModalLabel">
+                    Accept news</h5>
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body text-center font-weight-bold" id="modal"
+                 data-toggle="tab" href="#modal"
+                 role="tab" aria-controls="table1">
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-6">
+                        <form>
+                            <div class="form-group">
+                                <label for="formControlIdAccept">ID</label>
+                                <input type="number" class="form-control"
+                                       id="formControlIdAccept"
+                                       disabled
+                                       placeholder="Hello world!">
+                            </div>
+                            <div class="form-group">
+                                <label for="formControlIAuthorAccept">Author</label>
+                                <input type="text" class="form-control"
+                                       id="formControlIAuthorAccept"
+                                       disabled
+                                       placeholder="Ivan">
+                            </div>
+                            <div class="form-group">
+                                <label for="formControlNewsAccept">News</label>
+                                <input type="text" class="form-control"
+                                       id="formControlNewsAccept"
+                                       disabled
+                                       placeholder="Hello world!">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Close
+                </button>
+                <button type="button" class="btn btn-primary" id="acceptButton"
+                        data-dismiss="modal">
+                    Accept
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="rejectModal" tabindex="-1" role="dialog"
+     aria-labelledby="rejectModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rejectModalLabel">
+                    Reject news</h5>
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body text-center font-weight-bold" id="modalreject"
+                 data-toggle="tab" href="#modal"
+                 role="tab" aria-controls="table1">
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-6">
+                        <form>
+                            <div class="form-group">
+                                <label for="formControlIdAccept">ID</label>
+                                <input type="number" class="form-control"
+                                       id="formControlIdReject"
+                                       disabled
+                                       placeholder="1!">
+                            </div>
+                            <div class="form-group">
+                                <label for="formControlIAuthorAccept">Author</label>
+                                <input type="text" class="form-control"
+                                       id="formControlIAuthorReject"
+                                       disabled
+                                       placeholder="Ivan">
+                            </div>
+                            <div class="form-group">
+                                <label for="formControlNewsAccept">News</label>
+                                <input type="text" class="form-control"
+                                       id="formControlNewsReject"
+                                       disabled
+                                       placeholder="Hello world!">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal">Close
+                </button>
+                <button type="button" class="btn btn-primary" id="rejectButton"
+                        data-dismiss="modal">Reject
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addNewsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add news</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="formControlToPublish" class="h4"></label>
+                    <textarea class="form-control " id="formControlToPublish" rows="3"
+                              placeholder="Write down what you have interesting!">
+
+                    </textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="publishNewsButton" data-dismiss="modal" class="btn btn-primary">Publish
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     let roleUserToAdmin;
+    let authenticationUser;
     $(document).ready(function () {
         viewTableAuthenticationUser();
-        viewTableUsers();
         authorizationUserToRole();
+        viewTableUsers();
+        viewTableNewsForAdmin();
+        viewTableNewsForUser();
+
 
         $("#addUserButton").click(function () {
             $("#userTable-tab").click();
@@ -354,8 +588,34 @@
 
         $("#deleteButton").click(function () {
             deleteUser();
-
         });
+
+        $("#acceptButton").click(function () {
+            moderationByAdmin();
+            viewTableNewsForAdmin();
+            viewTableNewsForUser();
+        });
+
+        $("#rejectButton").click(function () {
+            deleteNews();
+            viewTableNewsForAdmin();
+            viewTableNewsForUser();
+        });
+
+        $("#addNewsButtonModal").click(function () {
+            const content = $("#formControlPublish").val();
+            $("#formControlToPublish").val(content);
+            $("#addNewsModal").modal('show');
+        });
+
+        $("#publishNewsButton").click(function () {
+            addNews();
+            viewTableNewsForAdmin();
+            // $("#formControlToPublish").html("");
+            $("#formControlPublish").val("");
+        });
+
+
         $('#tableUsers').on('click', '.btn-edit', function () {
             const name = $(this).parent().parent().find(".userName").html();
             const lastName = $(this).parent().parent().find(".lastName").html();
@@ -387,10 +647,32 @@
             $("#formControlIDelete").val(id);
             $("#deleteModal").modal('show');
         });
+
+        $('#tableNews').on('click', '.btn-accept', function () {
+            const id = $(this).parent().parent().find(".id").html();
+            const author = $(this).parent().parent().find(".author").html();
+            const content = $(this).parent().parent().find(".content").html();
+            $("#formControlIAuthorAccept").val(author);
+            $("#formControlNewsAccept").val(content);
+            $("#formControlIdAccept").val(id);
+            $("#acceptModal").modal('show');
+        });
+
+        $('#tableNews').on('click', '.btn-reject', function () {
+            const id = $(this).parent().parent().find(".id").html();
+            const author = $(this).parent().parent().find(".author").html();
+            const content = $(this).parent().parent().find(".content").html();
+            $("#formControlIAuthorReject").val(author);
+            $("#formControlNewsReject").val(content);
+            $("#formControlIdReject").val(id);
+            $("#rejectModal").modal('show');
+        });
+
     });
 
+
     function authorizationUserToRole() {
-        if (roleUserToAdmin === "") {
+        if (roleUserToAdmin === "" || roleUserToAdmin == null) {
             $("#adminPill").attr("hidden", true);
             $("#userPill").click();
         }
@@ -426,6 +708,7 @@
     }
 
     function viewTableAuthenticationUser() {
+        roleUserToAdmin = "";
         $("#tableAuthenticationUser tbody").html("");
         $.ajax({
             type: "GET",
@@ -445,9 +728,10 @@
                     "</tr>"
                 );
                 roleUserToAdmin = user.roleAdmin;
+                authenticationUser = user.username;
                 $("#AuthenticationUser").html("")
                     .append(user.email + " with roles: " + user.roleUser + " " + user.roleAdmin);
-                authorizationUserToRole();
+
             }
         });
     }
@@ -496,6 +780,9 @@
         });
         viewTableUsers();
         viewTableAuthenticationUser();
+        authorizationUserToRole();
+
+
     }
 
     function deleteUser() {
@@ -510,6 +797,102 @@
             },
         });
         viewTableUsers();
+        viewTableAuthenticationUser();
+        authorizationUserToRole();
+    }
+
+    // Methods of working with news
+    function viewTableNewsForAdmin() {
+        $("#tableNews tbody").html("");
+        $.ajax({
+            type: "GET",
+            url: "admin/news/view",
+            contentType: "application/json; charset=utf-8",
+            data: "",
+            async: false,
+            success: function (results) {
+                results.forEach(news => {
+                    $("#tableNews tbody").append(
+                        "<tr>" +
+                        "<td class='id' >" + news.id + "</td>" +
+                        "<td class='author' >" + news.author + "</td>" +
+                        "<td class='assessmentAggression' >" + news.assessmentAggression + "</td>" +
+                        "<td class='content' >" + news.content + "</td>" +
+                        "<td >" + "<button   class='btn btn-info btn-accept'> " +
+                        "Accept</button>" + "</td>" +
+                        "<td >" + "<button class='btn btn-danger btn-reject'> " +
+                        "Reject</button>" + "</td>" +
+                        " </tr>"
+                    );
+                });
+            }
+        });
+    }
+
+    function viewTableNewsForUser() {
+        $("#tableUserNews tbody").html("");
+        $.ajax({
+            type: "GET",
+            url: "news/view",
+            contentType: "application/json; charset=utf-8",
+            data: "",
+            async: false,
+            success: function (results) {
+                results.forEach(news => {
+                    $("#tableUserNews tbody").append(
+                        "<tr>" +
+                        "<td class='Author' >" + news.author + "</td>" +
+                        "<td class='News' >" + news.content + "</td>" +
+                        " </tr>"
+                    );
+                });
+            }
+        });
+    }
+
+    function moderationByAdmin() {
+        var idNews = $("#formControlIdAccept").val();
+        $.ajax({
+            type: "PUT",
+            url: "admin/news/moderation/" + idNews,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: false,
+            success: function () {
+            },
+        });
+    }
+
+    function addNews() {
+        $.ajax({
+            type: "POST",
+            url: "/news/save",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: false,
+            data: JSON.stringify(
+                {
+                    content: $("#formControlToPublish").val(),
+                    author: authenticationUser,
+
+                }
+            ),
+        });
+        viewTableUsers();
+    }
+
+
+    function deleteNews() {
+        var idRejectNews = $("#formControlIdReject").val();
+        $.ajax({
+            type: "DELETE",
+            url: "admin/news/delete/" + idRejectNews,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: false,
+            success: function () {
+            },
+        });
     }
 
 </script>

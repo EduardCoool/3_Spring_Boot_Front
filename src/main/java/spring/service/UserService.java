@@ -1,8 +1,8 @@
 package spring.service;
 
-import spring.dto.UserDTO;
-import spring.dto.UserToViewDTO;
 import spring.model.User;
+import spring.model.UserDTO;
+import spring.model.UserToViewDTO;
 
 import java.util.List;
 
