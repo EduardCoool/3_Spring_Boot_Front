@@ -1,7 +1,7 @@
 package spring.service;
 
-import spring.model.News;
+import spring.model.Post;
 
 public interface ChatGPTModerationService {
-    boolean moderationByGPT(News news);
+    boolean moderationByGPT(Post post);
 }

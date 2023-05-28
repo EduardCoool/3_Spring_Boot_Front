@@ -3,8 +3,8 @@ package spring.contoller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import spring.model.UserDTO;
-import spring.model.UserToViewDTO;
+import spring.model.dto.UserDTO;
+import spring.model.dto.UserToViewDTO;
 import spring.service.UserService;
 
 import java.util.List;

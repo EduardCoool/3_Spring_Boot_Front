@@ -1,4 +1,4 @@
-package spring.chatGpt;
+package spring.service.chatGpt;
 
 public interface ChatGptService {
 

@@ -3,10 +3,10 @@ package spring;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Bean;
-import spring.model.News;
+import spring.model.Post;
 import spring.model.Role;
 import spring.model.User;
-import spring.service.NewsService;
+import spring.service.PostService;
 import spring.service.UserDetailsServiceImpl;
 
 import java.util.Set;
@@ -20,12 +20,10 @@ public class SpringBootApplication {
     }
 
     @Bean
-    public CommandLineRunner demo(UserDetailsServiceImpl repository, NewsService newsService) {
+    public CommandLineRunner demo(UserDetailsServiceImpl repository, PostService postService) {
         return (args) -> {
-            News news = new News(1L, "Вино за 217 рублей получило золотую медаль престижного винного конкурса", "ivan", false, false);
-//            News news2 = new News(2L, "Прелестный код, если бы не тупые скобочки", "ivan", false, false);
-
-
+            Post post = new Post(1L, "Вино за 217 рублей получило золотую медаль престижного " +
+                    "винного конкурса", "ivan", false, false);
             Role roleUser = new Role(1L, "ROLE_USER");
             Role roleAdmin = new Role(2L, "ROLE_ADMIN");
 
@@ -39,9 +37,7 @@ public class SpringBootApplication {
                             "polymorph@mail.ru", Set.of(roleAdmin, roleUser));
 
 
-            newsService.save(news);
-//            newsService.save(news2);
-
+            postService.save(post);
 
             repository.save(user);
             repository.save(admin);

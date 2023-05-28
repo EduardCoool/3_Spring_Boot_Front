@@ -1,4 +1,4 @@
-package spring.model;
+package spring.model.dto;
 
 public class UserToViewDTO {
     private Long id;

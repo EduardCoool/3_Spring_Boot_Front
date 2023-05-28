@@ -1,4 +1,4 @@
-package spring.chatGpt;
+package spring.service.chatGpt;
 
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -11,12 +11,10 @@ public class JsonChatGPT {
     public JSONObject getJsonRequest(String message) throws JSONException {
         JSONArray messagesArray = new JSONArray();
 
-
         JSONObject userMessageObject = new JSONObject();
         userMessageObject.put("role", "user");
         userMessageObject.put("content", message);
         messagesArray.put(userMessageObject);
-
 
         JSONObject requestObject = new JSONObject();
         requestObject.put("model", "gpt-3.5-turbo");
@@ -34,5 +32,4 @@ public class JsonChatGPT {
                 .get("content");
         return result.replace(".", "");
     }
-
 }
