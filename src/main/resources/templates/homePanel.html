@@ -61,7 +61,10 @@
                                role="tab" aria-controls="newUser" aria-selected="false">New User</a>
 
                             <a class="nav-item nav-link" id="moderNews-tab" data-toggle="tab" href="#moderNews"
-                               role="tab" aria-controls="moderNews" aria-selected="false">Moderation News</a>
+                               role="tab" aria-controls="moderNews" aria-selected="false">Moderation News
+                                <span class="badge badge-warning" id="NoModerationNews"></span>
+
+                            </a>
                         </div>
                     </nav>
 
@@ -180,8 +183,8 @@
                                href="#aboutUserTable"
                                role="tab" aria-controls="aboutUserTable" aria-selected="true">Home</a>
 
-                            <a class="nav-item nav-link" id="news-tab" data-toggle="tab" href="#news"
-                               role="tab" aria-controls="news" aria-selected="false">News</a>
+                            <a class="nav-item nav-link" id="post-tab" data-toggle="tab" href="#post"
+                               role="tab" aria-controls="post" aria-selected="false">News</a>
                         </div>
                     </nav>
 
@@ -210,12 +213,12 @@
                         </div>
 
 
-                        <div class="tab-pane fade" id="news"
-                             role="tabpanel" aria-labelledby="news-tab">
+                        <div class="tab-pane fade" id="post"
+                             role="tabpanel" aria-labelledby="post-tab">
                             <br>
                             <form>
                                 <div class="form-group" style="width:97%">
-                                    <label for="formControlPublish" class="h4">Publish the news</label>
+                                    <label for="formControlPublish" class="h4">Publish the post</label>
                                     <textarea class="form-control " id="formControlPublish" rows="3"
                                               placeholder="Write down what you have interesting!"></textarea>
                                 </div>
@@ -224,7 +227,7 @@
                             <div class="row justify-content-end" style="width:98%">
                                 <a id="addNewsButtonModal" data-toggle="tab" role="tab"
                                    href="#addNewsButtonModal" aria-selected="true"
-                                   class="button btn btn-success"> Add news
+                                   class="button btn btn-success"> Add post
                                 </a>
                             </div>
 
@@ -425,7 +428,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="acceptModalLabel">
-                    Accept news</h5>
+                    Accept post</h5>
                 <button type="button" class="close" data-dismiss="modal"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -485,7 +488,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="rejectModalLabel">
-                    Reject news</h5>
+                    Reject post</h5>
                 <button type="button" class="close" data-dismiss="modal"
                         aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -542,7 +545,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Add news</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Add post</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -569,7 +572,10 @@
 <script>
     let roleUserToAdmin;
     let authenticationUser;
+    const socket = new WebSocket("ws://localhost:8080/admin/post/view/count");
+
     $(document).ready(function () {
+
         viewTableAuthenticationUser();
         authorizationUserToRole();
         viewTableUsers();
@@ -611,7 +617,6 @@
         $("#publishNewsButton").click(function () {
             addNews();
             viewTableNewsForAdmin();
-            // $("#formControlToPublish").html("");
             $("#formControlPublish").val("");
         });
 
@@ -678,6 +683,25 @@
         }
     }
 
+    function checkModerationNews() {
+        if (socket.readyState === 1) {
+            socket.send("");
+        }
+        console.log(socket.readyState)
+        socket.addEventListener('open', () => {
+            console.log('WebSocket-соединение установлено ' + socket.readyState);
+            setTimeout(() => {
+            }, 3000);
+            socket.send("");
+        });
+        socket.onmessage = function (event) {
+            $('#NoModerationNews').html("")
+                .append(event.data);
+
+        };
+    }
+
+
     function viewTableUsers() {
         $("#tableUsers tbody").html("");
         $.ajax({
@@ -731,6 +755,7 @@
                 authenticationUser = user.username;
                 $("#AuthenticationUser").html("")
                     .append(user.email + " with roles: " + user.roleUser + " " + user.roleAdmin);
+
 
             }
         });
@@ -801,48 +826,51 @@
         authorizationUserToRole();
     }
 
-    // Methods of working with news
+
     function viewTableNewsForAdmin() {
         $("#tableNews tbody").html("");
         $.ajax({
             type: "GET",
-            url: "admin/news/view",
+            url: "admin/post/view",
             contentType: "application/json; charset=utf-8",
             data: "",
             async: false,
             success: function (results) {
-                results.forEach(news => {
+                results.forEach(post => {
                     $("#tableNews tbody").append(
                         "<tr>" +
-                        "<td class='id' >" + news.id + "</td>" +
-                        "<td class='author' >" + news.author + "</td>" +
-                        "<td class='assessmentAggression' >" + news.assessmentAggression + "</td>" +
-                        "<td class='content' >" + news.content + "</td>" +
+                        "<td class='id' >" + post.id + "</td>" +
+                        "<td class='author' >" + post.author + "</td>" +
+                        "<td class='assessmentAggression' >" + post.assessmentAggression + "</td>" +
+                        "<td class='content' >" + post.content + "</td>" +
                         "<td >" + "<button   class='btn btn-info btn-accept'> " +
                         "Accept</button>" + "</td>" +
                         "<td >" + "<button class='btn btn-danger btn-reject'> " +
                         "Reject</button>" + "</td>" +
                         " </tr>"
                     );
+
                 });
             }
         });
+        checkModerationNews();
     }
+
 
     function viewTableNewsForUser() {
         $("#tableUserNews tbody").html("");
         $.ajax({
             type: "GET",
-            url: "news/view",
+            url: "post/view",
             contentType: "application/json; charset=utf-8",
             data: "",
             async: false,
             success: function (results) {
-                results.forEach(news => {
+                results.forEach(post => {
                     $("#tableUserNews tbody").append(
                         "<tr>" +
-                        "<td class='Author' >" + news.author + "</td>" +
-                        "<td class='News' >" + news.content + "</td>" +
+                        "<td class='Author' >" + post.author + "</td>" +
+                        "<td class='News' >" + post.content + "</td>" +
                         " </tr>"
                     );
                 });
@@ -854,7 +882,7 @@
         var idNews = $("#formControlIdAccept").val();
         $.ajax({
             type: "PUT",
-            url: "admin/news/moderation/" + idNews,
+            url: "admin/post/moderation/" + idNews,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             async: false,
@@ -866,7 +894,7 @@
     function addNews() {
         $.ajax({
             type: "POST",
-            url: "/news/save",
+            url: "/post/save",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             async: false,
@@ -886,7 +914,7 @@
         var idRejectNews = $("#formControlIdReject").val();
         $.ajax({
             type: "DELETE",
-            url: "admin/news/delete/" + idRejectNews,
+            url: "admin/post/delete/" + idRejectNews,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             async: false,

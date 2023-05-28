@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "news")
-public class News {
+public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,15 +20,15 @@ public class News {
 
     private int assessmentAggression;
 
-    public News() {
+    public Post() {
     }
 
-    public News(String content, String author) {
+    public Post(String content, String author) {
         this.content = content;
         this.author = author;
     }
 
-    public News(Long id, String content, String author, boolean moderationAdmin, boolean moderationGPT) {
+    public Post(Long id, String content, String author, boolean moderationAdmin, boolean moderationGPT) {
         this.id = id;
         this.content = content;
         this.author = author;

@@ -1,4 +1,4 @@
-package spring.model;
+package spring.model.dto;
 
 import java.util.Set;
 
