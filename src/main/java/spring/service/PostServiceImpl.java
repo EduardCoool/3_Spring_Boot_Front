@@ -90,4 +90,6 @@ public class PostServiceImpl implements PostService, ChatGPTModerationService {
         postRepository.deleteById(id);
         return true;
     }
+
+//    Первый комит
 }
