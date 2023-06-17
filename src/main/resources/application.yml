@@ -19,4 +19,4 @@ spring:
 sortByValue: id
 
 URL: https://api.openai.com/v1/chat/completions
-API_KEY: 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
+API_KEY: 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
